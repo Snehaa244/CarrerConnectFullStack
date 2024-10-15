@@ -1,8 +1,8 @@
-import axios from "axios";
-import React, { useContext, useState } from "react";
+import React, { useState, useContext } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import { Context } from "../../main";
+
 const Application = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -12,51 +12,54 @@ const Application = () => {
   const [resume, setResume] = useState(null);
 
   const { isAuthorized, user } = useContext(Context);
-
   const navigateTo = useNavigate();
+  const { id } = useParams();
 
-  // Function to handle file input changes
+  // Handle file input
   const handleFileChange = (event) => {
     const resume = event.target.files[0];
     setResume(resume);
   };
 
-  const { id } = useParams();
-  const handleApplication = async (e) => {
+  // Function to handle application submission
+  const handleApplication = (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("email", email);
-    formData.append("phone", phone);
-    formData.append("address", address);
-    formData.append("coverLetter", coverLetter);
-    formData.append("resume", resume);
-    formData.append("jobId", id);
 
-    try {
-      const { data } = await axios.post(
-        "http://localhost:4000/api/v1/application/post",
-        formData,
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      setName("");
-      setEmail("");
-      setCoverLetter("");
-      setPhone("");
-      setAddress("");
-      setResume("");
-      toast.success(data.message);
-      navigateTo("/job/getall");
-    } catch (error) {
-      toast.error(error.response.data.message);
-    }
+    const newApplication = {
+      name,
+      email,
+      phone,
+      address,
+      coverLetter,
+      resume: URL.createObjectURL(resume), // Store the file locally
+      jobId: id,
+    };
+
+    // Get existing applications from localStorage
+    const storedApplications = JSON.parse(localStorage.getItem("applications")) || [];
+
+    // Save the new application
+    localStorage.setItem(
+      "applications",
+      JSON.stringify([...storedApplications, newApplication])
+    );
+
+    // Clear form fields
+    setName("");
+    setEmail("");
+    setCoverLetter("");
+    setPhone("");
+    setAddress("");
+    setResume(null);
+
+    // Show success message
+    toast.success("Application submitted successfully!");
+
+    // Navigate to the job listing page
+    navigateTo("/job/getall");
   };
 
+  // Redirect if not authorized or user is Employer
   if (!isAuthorized || (user && user.role === "Employer")) {
     navigateTo("/");
   }
@@ -91,14 +94,12 @@ const Application = () => {
             onChange={(e) => setAddress(e.target.value)}
           />
           <textarea
-            placeholder="CoverLetter..."
+            placeholder="Cover Letter"
             value={coverLetter}
             onChange={(e) => setCoverLetter(e.target.value)}
           />
           <div>
-            <label
-              style={{ textAlign: "start", display: "block", fontSize: "20px" }}
-            >
+            <label style={{ textAlign: "start", display: "block", fontSize: "20px" }}>
               Select Resume
             </label>
             <input

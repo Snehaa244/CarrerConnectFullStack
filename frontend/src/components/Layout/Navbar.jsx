@@ -31,7 +31,7 @@ const Navbar = () => {
     <nav className={isAuthorized ? "navbarShow" : "navbarHide"}>
       <div className="container">
         <div className="logo">
-          <img src="/careerconnect-white.png" alt="logo" />
+         logo
         </div>
         <ul className={!show ? "menu" : "show-menu menu"}>
           <li>
