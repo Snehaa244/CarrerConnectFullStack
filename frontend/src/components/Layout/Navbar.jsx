@@ -30,8 +30,8 @@ const Navbar = () => {
   return (
     <nav className={isAuthorized ? "navbarShow" : "navbarHide"}>
       <div className="container">
-        <div className="logo">
-         logo
+        <div className="logo text-white mt-5">
+         CarrerConnect
         </div>
         <ul className={!show ? "menu" : "show-menu menu"}>
           <li>

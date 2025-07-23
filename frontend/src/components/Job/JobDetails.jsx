@@ -28,10 +28,10 @@ const JobDetails = () => {
   }
 
   return (
-    <section className="jobDetail page">
-      <div className="container">
+    <section className="jobDetail page bg-zinc-900">
+      <div className="container bg-zinc-900 text-blue-400">
         <h3>Job Details</h3>
-        <div className="banner">
+        <div className="banner text-white">
           <p>
             Title: <span> {job.title}</span>
           </p>

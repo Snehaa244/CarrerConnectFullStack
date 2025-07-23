@@ -17,9 +17,21 @@ import PostJob from "./components/Job/PostJob";
 import NotFound from "./components/NotFound/NotFound";
 import MyJobs from "./components/Job/MyJobs";
 import LinkedIn from "./components/LinkedIn";
+import Events from "./components/Home/Events";
+import JobSeekerDashboard from "./components/JobSeekerDashboard";
+import RecruiterView from "./components/RecruiterView";
+
+// Profile component for conditional rendering
+const Profile = () => {
+  const { user } = useContext(Context);
+
+  // Conditional rendering based on user role
+  return user?.role === "recruiter" ? <RecruiterView /> : <JobSeekerDashboard />;
+};
 
 const App = () => {
   const { isAuthorized, setIsAuthorized, setUser } = useContext(Context);
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -29,14 +41,14 @@ const App = () => {
             withCredentials: true,
           }
         );
-        setUser(response.data.user);
-        setIsAuthorized(true);
+        setUser(response.data.user); // Set the logged-in user
+        setIsAuthorized(true); // User is authorized
       } catch (error) {
-        setIsAuthorized(false);
+        setIsAuthorized(false); // User is not authorized
       }
     };
     fetchUser();
-  }, [isAuthorized]);
+  }, [isAuthorized, setIsAuthorized, setUser]);
 
   return (
     <>
@@ -52,9 +64,13 @@ const App = () => {
           <Route path="/applications/me" element={<MyApplications />} />
           <Route path="/job/post" element={<PostJob />} />
           <Route path="/job/me" element={<MyJobs />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/LinkedIn" element={<LinkedIn />} />
+          <Route path="/Profile" element={<Profile />} /> {/* Role-based rendering */}
           <Route path="*" element={<NotFound />} />
+          <Route path="/jobseekerdashboard" element={<JobSeekerDashboard />} />
+          <Route path="/RecruiterView" element={<RecruiterView />} />
         </Routes>
-        <LinkedIn/>
         <Footer />
         <Toaster />
       </BrowserRouter>

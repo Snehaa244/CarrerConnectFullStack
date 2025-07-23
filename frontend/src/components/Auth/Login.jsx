@@ -43,26 +43,26 @@ const Login = () => {
 
   return (
     <>
-      <section className="authPage">
-        <div className="container">
-          <div className="header">
+      <section className="authPage bg-zinc-900">
+        <div className="container bg-zinc-900">
+          <div className="header text-white">
             {/* <img src="/careerconnect-black.png" alt="logo" /> */}
             <h3>Login to your account</h3>
           </div>
           <form>
-            <div className="inputTag">
+            <div className="inputTag text-white">
               <label>Login As</label>
               <div>
                 <select value={role} onChange={(e) => setRole(e.target.value)}>
                   <option value="">Select Role</option>
                   
                   <option value="Job Seeker">Job Seeker</option>
-                  <option value="Employer">Employer</option>
+                  <option value="Employer">Recruiter</option>
                 </select>
                 <FaRegUser />
               </div>
             </div>
-            <div className="inputTag">
+            <div className="inputTag text-white">
               <label>Email Address</label>
               <div>
                 <input
@@ -74,7 +74,7 @@ const Login = () => {
                 <MdOutlineMailOutline />
               </div>
             </div>
-            <div className="inputTag">
+            <div className="inputTag text-white">
               <label>Password</label>
               <div>
                 <input

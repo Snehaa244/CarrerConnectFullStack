@@ -2,13 +2,31 @@ import React, { useState } from 'react';
 
 const Events = () => {
   const [events, setEvents] = useState([]);
-  const [newEvent, setNewEvent] = useState({ title: '', description: '', time: '', venue: '' });
+  const [newEvent, setNewEvent] = useState({
+    title: '',
+    description: '',
+    time: '',
+    venue: '',
+    image: null,
+    whatsappLink: '',
+  });
   const [comment, setComment] = useState('');
 
   const addEvent = () => {
-    if (newEvent.title && newEvent.description && newEvent.time && newEvent.venue) {
+    if (newEvent.title && newEvent.description && newEvent.time && newEvent.venue && newEvent.whatsappLink) {
       setEvents([...events, { ...newEvent, likes: 0, dislikes: 0, comments: [] }]);
-      setNewEvent({ title: '', description: '', time: '', venue: '' });
+      setNewEvent({ title: '', description: '', time: '', venue: '', image: null, whatsappLink: '' });
+    }
+  };
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setNewEvent({ ...newEvent, image: reader.result });
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -34,12 +52,12 @@ const Events = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center p-8">
+    <div className="min-h-screen bg-gray-700 text-white flex flex-col items-center p-8">
       <div className="w-full max-w-4xl">
         <h1 className="text-4xl font-bold mb-8 text-center">Community Events</h1>
 
         {/* New Event Form */}
-        <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-10 w-full">
+        <div className="bg-zinc-800 p-6 rounded-lg shadow-lg mb-10 w-full">
           <h2 className="text-2xl font-semibold mb-6">Add a New Event</h2>
           <div className="flex flex-col space-y-4">
             <input
@@ -68,6 +86,19 @@ const Events = () => {
               onChange={(e) => setNewEvent({ ...newEvent, venue: e.target.value })}
               className="p-3 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none"
             />
+            <input
+              type="file"
+              onChange={handleImageUpload}
+              accept="image/*"
+              className="p-3 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none"
+            />
+            <input
+              type="url"
+              placeholder="WhatsApp Group Link"
+              value={newEvent.whatsappLink}
+              onChange={(e) => setNewEvent({ ...newEvent, whatsappLink: e.target.value })}
+              className="p-3 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none"
+            />
             <button onClick={addEvent} className="bg-blue-500 text-white py-3 rounded-md hover:bg-blue-600">
               Add Event
             </button>
@@ -77,18 +108,31 @@ const Events = () => {
         {/* Event List in Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {events.length === 0 ? (
-            <p className="text-center text-lg">No events yet. Add an event!</p>
+            <p className="text-center text-white text-lg">No events yet. Add an event!</p>
           ) : (
             events.map((event, index) => (
-              <div key={index} className="bg-gray-800 p-6 rounded-lg shadow-lg">
-                <h2 className="text-2xl font-bold mb-2">{event.title}</h2>
-                <p className="mb-4">{event.description}</p>
+              <div key={index} className="bg-Zinc-800 text-white p-6 rounded-lg shadow-lg">
+                {event.image && (
+                  <img src={event.image} alt={event.title} className="mb-4 w-full h-48 object-cover rounded-lg" />
+                )}
+                <h2 className="text-2xl text-white font-bold mb-2">{event.title}</h2>
+                <p className="mb-4 text-white">{event.description}</p>
                 <p className="mb-2">
                   <strong>Time:</strong> {new Date(event.time).toLocaleString()}
                 </p>
                 <p className="mb-4">
                   <strong>Venue:</strong> {event.venue}
                 </p>
+                {event.whatsappLink && (
+                  <a
+                    href={event.whatsappLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-400 underline mb-4 inline-block"
+                  >
+                    Join WhatsApp Group
+                  </a>
+                )}
                 <div className="flex space-x-4 mb-4">
                   <button
                     onClick={() => likeEvent(index)}

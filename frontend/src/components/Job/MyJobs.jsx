@@ -86,7 +86,7 @@ const MyJobs = () => {
   return (
     <>
       <div className="myJobs page">
-        <div className="container">
+        <div className="container text-white">
           <h1>Your Posted Jobs</h1>
           {myJobs.length > 0 ? (
             <>

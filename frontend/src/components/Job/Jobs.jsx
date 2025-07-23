@@ -25,9 +25,9 @@ const Jobs = () => {
   }
 
   return (
-    <section className="jobs page">
-      <div className="container">
-        <h1>ALL AVAILABLE JOBS</h1>
+    <section className="jobs page bg-zinc-900">
+      <div className="container bg-zinc-900">
+        <h1 className="text-white">ALL AVAILABLE JOBS</h1>
         <div className="banner">
           {jobs.jobs &&
             jobs.jobs.map((element) => {

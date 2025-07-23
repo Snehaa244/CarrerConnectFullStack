@@ -7,6 +7,9 @@ import HowItWorks from "./HowItWorks";
 import PopularCategories from "./PopularCategories";
 import PopularCompanies from "./PopularCompanies";
 import Events from "./Events";
+import About from "./About";
+import Contact from "./Contact";
+import MyChatBot from "./Chatbot";
 
 const Home = () => {
   const { isAuthorized } = useContext(Context);
@@ -15,12 +18,15 @@ const Home = () => {
   }
   return (
     <>
-      <section className="homePage page">
+      <section className="homePage page bg-zinc-900">
+        <MyChatBot/>
         <HeroSection />
-        <HowItWorks />
+        <HowItWorks/>
+        <About/>
         <PopularCategories />
         <PopularCompanies />
-        <Events/>
+        <Contact/>
+        {/* <Events/> */}
       </section>
     </>
   );

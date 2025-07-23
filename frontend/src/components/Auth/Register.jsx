@@ -50,19 +50,19 @@ const Register = () => {
 
   return (
     <>
-      <section className="authPage">
+      <section className="authPage bg-zinc-900">
         <div className="container">
           <div className="header">
             {/* <img src="/careerconnect-black.png" alt="logo" /> */}
             <h3>Create a new account</h3>
           </div>
-          <form>
-            <div className="inputTag">
+          <form className="text-white">
+            <div className="inputTag ">
               <label>Register As</label>
               <div>
                 <select value={role} onChange={(e) => setRole(e.target.value)}>
                   <option value="">Select Role</option>
-                  <option value="Employer">Employer</option>
+                  <option value="Employer">Recruiter</option>
                   <option value="Job Seeker">Job Seeker</option>
                 </select>
                 <FaRegUser />
